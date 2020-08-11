@@ -15,13 +15,11 @@ while i <= 75:
 
     print("page: " + str(i))
     print(url)
-    
+
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
     for link in soup.find("ul", class_="superlist").find_all("a", itemprop="url"):
-        #Name the pdf files using the last portion of each link which are unique in this case
-
         #create separate folder for each author's books
         author_name = link['href'].split('/')[-1]
         folder_location = "../books/" + author_name
@@ -31,19 +29,21 @@ while i <= 75:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
 
+        print("\nauthor: " + author_name)
+
         #using regex to match the starting pattern and everything else after that
         for link2 in soup.find_all("a", {'title': re.compile(r'^Сваляне във формат txt.zip')}):
-            #Name the pdf files using the last portion of each link which are unique in this case
-            book_name = link2['href'].split('/')[-1]
-            filename = os.path.join(folder_location, book_name)
-            #print("filename: " + filename)
-            #print(url)
-            #print(link2['href'])
-            #print(link2['href'].split('/')[-1])
+            #Name the files using the last portion of the link
 
-            if not os.path.exists(folder_location):os.mkdir(folder_location)
+            if link2['href'].split('/')[-2] == "text":
+                book_name = link2['href'].split('/')[-1]
+                filename = os.path.join(folder_location, book_name)
+                print(filename)
 
-            f = open(filename, 'wb')
-            f.write(requests.get(urljoin(url,link2['href'])).content)
-            f.close()
+                if not os.path.exists(folder_location):os.mkdir(folder_location)
+
+                f = open(filename, 'wb')
+                f.write(requests.get(urljoin(url,link2['href'])).content)
+                f.close()
+    print("\n")
     i += 1
