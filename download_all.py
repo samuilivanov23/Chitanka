@@ -3,10 +3,7 @@ import re
 import requests
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-
-#If there is no such folder, the script will create one automatically
-folder_location = "../books/"
-if not os.path.exists(folder_location):os.mkdir(folder_location)
+import zipfile
 
 i = 1
 
@@ -32,18 +29,19 @@ while i <= 75:
         print("\nauthor: " + author_name)
 
         #using regex to match the starting pattern and everything else after that
-        for link2 in soup.find_all("a", {'title': re.compile(r'^Сваляне във формат txt.zip')}):
-            #Name the files using the last portion of the link
+        if author_name == "rainer-maria-rilke":
+            for link2 in soup.find_all("a", {'title': re.compile(r'^Сваляне във формат txt.zip')}):
+                #Name the files using the last portion of the link
 
-            if link2['href'].split('/')[-2] == "text":
-                book_name = link2['href'].split('/')[-1]
-                filename = os.path.join(folder_location, book_name)
-                print(filename)
+                if link2['href'].split('/')[-2] == "text":
+                    book_name = link2['href'].split('/')[-1]
+                    filename = os.path.join(folder_location, book_name)
+                    print(filename)
 
-                if not os.path.exists(folder_location):os.mkdir(folder_location)
+                    if not os.path.exists(folder_location):os.mkdir(folder_location)
 
-                f = open(filename, 'wb')
-                f.write(requests.get(urljoin(url,link2['href'])).content)
-                f.close()
+                    f = open(filename, 'wb')
+                    f.write(requests.get(urljoin(url,link2['href'])).content)
+                    f.close()
     print("\n")
     i += 1
