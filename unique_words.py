@@ -1,45 +1,38 @@
 import re, os
 
-my_dirnames = os.listdir("../books")[:300]
-files_locations = []
+my_dirnames = os.listdir("../books")
 unique_words = []
+words_count = dict()
+count = 0
 
 #read all books and extract the unique words
 for my_dir in my_dirnames:
+    print("my dir: " + my_dir)
     for my_file in os.listdir("../books/"+my_dir):
-       if my_file.endswith(".txt"):
+        if my_file.endswith(".txt"):
             file_location = "../books/"+my_dir+"/"+my_file
-            dir_location = "../books/"+my_dir+"/"
-            my_author_name = my_dir
-            files_locations.append(file_location)
-
             f = open(file_location, encoding='utf-8', mode='r')
             file_content = f.read()
             f.close()
 
-            current_file_words = set()
-            current_file_words = " ".join(re.findall('[а-яА-Я]+', file_content)).split()
-            current_file_words = list(current_file_words)
+            current_file_words = list(set(re.findall("[а-яА-Я]{3,}", file_content)))
 
-            final_words = set()
+            f = open("../unique_words.txt", encoding="utf-8", mode="w+")
             for word in current_file_words:
                 word = word.lower()
-                if len(word) > 2:
-                    final_words.add(word)
+                f.write(word+"\n")
+                if word in words_count:
+                    words_count[word] += 1
+                else:
+                    words_count[word] = 1
+            f.close()
 
-            final_words = list(final_words)
-            unique_words += final_words
+f = open("../unique_words.txt", encoding='utf-8', mode='r')
+file_content = f.read()
+f.close()
 
-unique_words = set(unique_words)
-count = 0
-print(unique_words)
-
-for word in unique_words:
-    if word == "ходил":
-        print("match")
+for key in words_count:
+    if words_count[key] == 1:
         count+=1
 
-print(len(unique_words))
-print("\n\n")
-
-print("matches: " + str(count))
+print("count: " + str(count))
