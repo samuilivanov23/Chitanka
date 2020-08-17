@@ -22,10 +22,13 @@ for my_dir in my_dirnames:
                     words_count[word] += 1
                 else:
                     words_count[word] = 1
-            f.close()
+
+f.close()
 
 for key in words_count:
     if words_count[key] == 1:
         count+=1
+
+f.close()
 
 print("count: " + str(count))
