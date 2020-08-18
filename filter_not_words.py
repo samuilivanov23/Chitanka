@@ -10,9 +10,6 @@ current_file_words_not_include = list(set(re.findall("\w+[аоу]{3,}", file_con
 current_file_words_include = list(set(re.findall("\w+", file_content)))
 
 for word in current_file_words_not_include:
-    print(word)
-
-for word in current_file_words_not_include:
     if word in current_file_words_include:
         current_file_words_include.remove(word)
         print("here")
