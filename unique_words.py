@@ -25,8 +25,11 @@ for my_dir in my_dirnames:
 
 f.close()
 
+f = open("../unique_words_2.txt", encoding="utf-8", mode="w+")
+
 for key in words_count:
     if words_count[key] == 1:
+        f.write(key + "\n")
         count+=1
 
 f.close()
