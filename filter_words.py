@@ -1,36 +1,39 @@
-char_set_1 = ["ите"]
-char_set_2 = ["ия", "ът", "ят", "та", "то"]
-
-f = open("../unique_words_4.txt", encoding='utf-8', mode='r')
+f = open("../unique_words_9.txt", encoding='utf-8', mode='r')
 file_content = f.read()
 f.close()
+word_list = file_content.split("\n")
+word_list_len = len(word_list)
 
-current_file_words = file_content.split("\n")
+final_words = []
 
+start_index = 0
+end_index = 2000
 count = 0
-for word in current_file_words:
-    print(count)
+current_file_words = file_content.split("\n")[start_index:end_index]
 
-    filtered_words_file = open("../filtered_words.txt", encoding='utf-8', mode='r')
-    filtered_words_content = filtered_words_file.read().split("\n")
-    filtered_words_file.close()
+while count < word_list_len:
+    for word in current_file_words:
+        if word[:(len(word) - 1)] in word_list:
+            final_words.append(word[:(len(word) - 1)])
+        elif word[:(len(word) - 2)] in word_list:
+            final_words.append(word[:(len(word) - 2)])
+        elif word[:(len(word) - 3)] in word_list:
+            final_words.append(word[:(len(word) - 3)])
+        else:
+            final_words.append(word)
 
-    f = open("../filtered_words.txt", encoding="utf-8", mode="a")
+        print(count)
+        count+=1
+    
+    start_index+=2000
+    end_index+=2000
+    current_file_words = file_content.split("\n")[start_index:end_index]
+    
 
-    if word[(len(word) - 3):] in char_set_1:
-        if not word[:(len(word) - 3)] in filtered_words_content:
-            f.write(word[:(len(word) - 3)] + "\n")
-            print(word[:(len(word) - 3)])
+final_words = list(set(final_words))
 
-    elif word[(len(word) - 2):] in char_set_2:
-        if not word[:(len(word) - 2)] in filtered_words_content:
-            f.write(word[:(len(word) - 2)] + "\n")
-            print(word[:(len(word) - 2)])
-            
-    else:
-        if not word in filtered_words_content:
-            f.write(word + "\n")
-            print(word)
+f = open("../filtered_words_2.txt", encoding="utf-8", mode="a")
 
-    count+=1
-    f.close()
+print("\n")
+for word in final_words:
+    f.write(word + "\n")
