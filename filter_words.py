@@ -1,28 +1,45 @@
-f = open("../unique_words_9.txt", encoding='utf-8', mode='r')
-file_content = f.read()
-f.close()
-word_list = file_content.split("\n")
+import psycopg2
+from dbconfig import dbname_, dbuser_, dbpassword_
 
-final_words = []
-count = 0
+#connect to the database
+connection = psycopg2.connect("dbname='" + dbname_ + "' user='" + dbuser_ + "' password='" + dbpassword_ + "'")
+connection.autocommit = True
+cur = connection.cursor()
 
-for word in word_list:
-    if word[:(len(word) - 1)] in word_list:
-        final_words.append(word[:(len(word) - 1)])
-    elif word[:(len(word) - 2)] in word_list:
-        final_words.append(word[:(len(word) - 2)])
-    elif word[:(len(word) - 3)] in word_list:
-        final_words.append(word[:(len(word) - 3)])
-    else:
-        final_words.append(word)
+#get filtered words
+filter_suffix = "%ят"
+sql = 'select * from public."chitanka_words" where word like %s'
+cur.execute(sql, (filter_suffix,))
+records = cur.fetchall()
+words_to_filter = [row[1] for row in records]
 
-    print(count)
-    count+=1
+#get all words in the database
+sql = 'select * from public."chitanka_words"'
+cur.execute(sql)
+records = cur.fetchall()
+all_words_list = [row[1] for row in records]
 
-final_words = list(set(final_words))
+#remove filtered words
+for word in words_to_filter:
+    all_words_list.remove(word)
 
-f = open("../filtered_words_2.txt", encoding="utf-8", mode="a")
+#delete rows from table 'chitanka_words'
+sql = 'delete from public."chitanka_words"'
+cur.execute(sql)
+connection.commit()
 
-print("\n")
-for word in final_words:
-    f.write(word + "\n")
+#populate the table 'chitanka_words' with the filtered list
+word_id = 1
+sql = 'insert into public."chitanka_words" (id, word) values(%s, %s);'
+for word in all_words_list:
+    try:
+        cur.execute(sql, (str(word_id), word))
+        word_id+=1
+    except:
+        print("skipping word: " + word)
+        word_id+=1
+    
+connection.commit()
+
+cur.close()
+connection.close()

@@ -2,7 +2,7 @@ import psycopg2
 import csv
 from dbconfig import dbname_, dbuser_, dbpassword_
 
-def create_tables():    
+def createTables():    
     command = ('''
 
     CREATE TABLE IF NOT EXISTS "chitanka_words" (
@@ -28,14 +28,14 @@ def create_tables():
         if connection is not None:
             connection.close()
 
-def import_data():
+def importData():
     try:
         #connect to the database
         connection = psycopg2.connect("dbname='" + dbname_ + "' user='" + dbuser_ + "' password='" + dbpassword_ + "'")
         connection.autocommit = True
         cur = connection.cursor()
 
-        f = open("../unique_words.txt", encoding="utf-8", mode="r")
+        f = open("../unique_words_3.txt", encoding="utf-8", mode="r")
         file_contents = f.read().split("\n")
         f.close()
 
@@ -59,5 +59,5 @@ def import_data():
     connection.close()
 
 if __name__ == '__main__':
-    create_tables()
-    import_data()
+    createTables()
+    importData()
