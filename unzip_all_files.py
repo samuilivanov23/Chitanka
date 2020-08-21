@@ -29,7 +29,6 @@ while starting_index < 6561:
         if starting_index == 6500:
             print("all files unzipped")
             break
-        #   #files_locations.append("../books/"+my_dir+"/"+my_file)
     except:
         starting_index += count
         print("unzipped authors: " + str(starting_index))
