@@ -47,7 +47,7 @@ for my_dir in base_path.iterdir():
         
         new_dir_name = cyrillic_country + "_" + new_dir_name
     except:
-        print()
+        print("No biography info in the page")
     
     print(my_dir)
     print(new_dir_name)
@@ -57,4 +57,4 @@ for my_dir in base_path.iterdir():
         move(my_dir, new_dir)
         count+=1
     except:
-        print("tuk")
+        print("Unable to change directory name")
