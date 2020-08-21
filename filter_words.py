@@ -21,11 +21,8 @@ all_words_list = [row[1] for row in records]
 
 #remove filtered words
 for word in words_to_filter:
-    print(word)
     if word[:len(word) - 1] in all_words_list:
-        print(word[:len(word) - 1])
         sql = 'delete from public."chitanka_words"' + " where word = '" + word + "'"
-        print(sql)
         cur.execute(sql)
 
 cur.close()
