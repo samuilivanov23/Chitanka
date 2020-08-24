@@ -6,24 +6,28 @@ connection = psycopg2.connect("dbname='" + dbname_ + "' user='" + dbuser_ + "' p
 connection.autocommit = True
 cur = connection.cursor()
 
-#get filtered words
-filter_suffix = "%ме"
+#take words to filter
+filter_suffix = "%ъ"
 sql = 'select * from public."chitanka_words" where word like %s'
 cur.execute(sql, (filter_suffix,))
 records = cur.fetchall()
 words_to_filter = [row[1] for row in records]
 
-#get all words in the database
+#take all words from the database
 sql = 'select * from public."chitanka_words"'
 cur.execute(sql)
 records = cur.fetchall()
 all_words_list = [row[1] for row in records]
 
-#remove filtered words
+# #remove filtered words
+# for word in words_to_filter:
+#     if word[:len(word) - 1] in all_words_list:
+#         sql = 'delete from public."chitanka_words"' + " where word = '" + word + "'"
+#         cur.execute(sql)
+
 for word in words_to_filter:
-    if word[:len(word) - 1] in all_words_list:
-        sql = 'delete from public."chitanka_words"' + " where word = '" + word + "'"
-        cur.execute(sql)
+    sql = 'delete from public."chitanka_words"' + " where word = '" + word + "'"
+    cur.execute(sql)
 
 cur.close()
 connection.close()
