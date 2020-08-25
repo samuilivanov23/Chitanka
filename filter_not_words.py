@@ -6,7 +6,7 @@ f.close()
 
 current_file_words_include = list(set(re.findall("\w+", file_content)))
 
-letters_list = ["г", "д", "е", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ю", "я"]
+letters_list = ["а", "б", "в", "г", "д", "е", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ю", "я"]
 
 def filterSingleRepeatingChar():
     for letter in letters_list:
