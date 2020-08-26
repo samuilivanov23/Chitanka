@@ -43,7 +43,7 @@ if __name__ == "__main__":
     records = cur.fetchall()
     all_words_list = [row[1] for row in records]
 
-    func_to_execute = argv[2]
+    #func_to_execute = argv[2]
     filterWords(words_to_filter, filter_suffix)
 
     cur.close()
