@@ -127,7 +127,7 @@ def importDataByAuthor(author_name_latin, author_name_cyrillic):
             connection.commit()
 
             initial_book_id = book_id #for the words table
-            sql = 'insert into public."Books" (id, word, author_id) values(%s, %s, %s);'
+            sql = 'insert into public."Books" (id, name, author_id) values(%s, %s, %s);'
             try:
                 cur.execute(sql, (str(book_id), book_name, str(initial_author_id)))
                 book_id+=1
@@ -259,89 +259,6 @@ def importData():
                         
         print("\n")
         i += 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # try:
-    #     #connect to the database
-    #     connection = psycopg2.connect("dbname='" + chitanka_dbname + 
-    #                                 "' user='" + chitanka_dbuser + 
-    #                                 "' password='" + chitanka_dbpassword + "'")
-
-    #     connection.autocommit = True
-    #     cur = connection.cursor()
-
-    #     f = open("../unique_words_3.txt", encoding="utf-8", mode="r")
-    #     file_contents = f.read().split("\n")
-    #     f.close()
-
-    #     word_id = 1
-    #     sql = 'insert into public."chitanka_words" (id, word) values(%s, %s);'
-    #     for word in file_contents:
-    #         try:
-    #             cur.execute(sql, (str(word_id), word))
-    #             word_id+=1
-    #         except:
-    #             print("skipping word: " + word)
-    #             word_id+=1
-            
-    #     f.close()
-        
-    #     connection.commit()
-    # except psycopg2.Error as e:
-    #     print(e)
-    
-    # cur.close()
-    # connection.close()
 
 if __name__ == '__main__':
     #importAllData()
