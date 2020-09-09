@@ -1,4 +1,6 @@
 import os
+from dbconfig import chitanka_dbname, chitanka_dbuser, chitanka_dbpassword
+import psycopg2
 
 files = folders = 0
 
